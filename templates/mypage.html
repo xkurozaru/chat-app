@@ -1,0 +1,17 @@
+<head>
+
+</head>
+<body>
+    <h1>My page</h1>
+    <h2>username:{{username}}</h2>
+    <div class="form">
+        <form action="/send" method="POST">
+                <label for="message">message</label>
+                <input type="text" message=message>
+                <input type="submit" value="tweeet">
+        </form>
+    </div>
+    {% for chat in chats %}
+    <p>{{chat.message}} [{{chat.date.date()}}]</p>
+    {% endfor %}
+</body>
