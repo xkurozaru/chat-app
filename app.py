@@ -36,7 +36,7 @@ def logincheck():
     cur.execute(
         "select id from user where username = username and password = password")
     id = cur.fetchone()[0]
-    con.close
+    con.close()
     if id is None:
         return redirect("/login")
     else:
@@ -49,22 +49,24 @@ def mypage():
     con = sqlite3.connect('chat.db')
     cur = con.cursor()
     cur.execute(
-        "select username from user where id = id")
+        "select username from user where id = id"
+    )
     username = cur.fetchone()[0]
-    con.close
-    chats = Chat.query.\
-        filter(Chat.username==username).\
-        all()
+    con.close()
+    chats = Chat.query.order_by(Chat.date.desc()).filter(Chat.username==username).all()
     return render_template("mypage.html", username=username, chats=chats)
     
 @app.route("/send", methods=["POST"])
 def send():
-    date = str(datetime.datetime.now())
-    message = request.form.get("message")
+    date = str(datetime.datetime.now().replace(microsecond = 0))
+    message = request.form.get('message')
     id = session['user_id']
-    username = User.query.\
-        filter(Chat.id==id).\
-        all()
+    con = sqlite3.connect('chat.db')
+    cur = con.cursor()
+    cur.execute(
+        "select username from user where id = id")
+    username = cur.fetchone()[0]
+    con.close()
     new_chat = Chat(username=username,date=date,message=message)
     db.session.add(new_chat)
     db.session.commit()

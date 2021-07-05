@@ -7,11 +7,11 @@
     <div class="form">
         <form action="/send" method="POST">
                 <label for="message">message</label>
-                <input type="text" message=message>
+                <input type="text" name="message">
                 <input type="submit" value="tweeet">
         </form>
     </div>
     {% for chat in chats %}
-    <p>{{chat.message}} [{{chat.date.date()}}]</p>
+    <p>{{chat.message}} [{{chat.date}}]</p>
     {% endfor %}
 </body>
