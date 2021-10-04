@@ -1,0 +1,10 @@
+<head>
+
+</head>
+<body>
+    <h1>User page</h1><h2><a href="/mainpage">Main page</a></h2>
+    <h2>username:{{username}}</h2>
+    {% for chat in chats %}
+    <p>{{chat.message}} [{{chat.date}}]</p>
+    {% endfor %}
+</body>
