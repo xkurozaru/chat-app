@@ -44,10 +44,11 @@ def logincheck():
 def regist():
     username = request.form.get("username")
     password = request.form.get("password")
-    User.username = username
-    User.password = password
-    db.session.add(User)
-    db.session.commit()
+    entry = User()
+    entry.username = username
+    entry.password = password
+    db.session.add(entry)
+    db.session.commit
     return redirect("/login")
 
 @app.route("/mypage")
