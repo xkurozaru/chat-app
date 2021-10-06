@@ -42,7 +42,7 @@ def logincheck():
         return render_template("login.html", notification="Username or password is incorrect.")
     else:
         session["user_id"] = user.id
-        return redirect("/mypage")
+        return redirect("/timeline")
 
 @app.route("/regist", methods=["POST"])
 def regist():
