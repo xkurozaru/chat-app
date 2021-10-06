@@ -2,7 +2,8 @@
 
 </head>
 <body>
-    <h1>My page [{{username}}]</h1><h2><a href="/mainpage">Main page</a></h2>
+    <h1>My page [{{username}}]</h1>
+    <h2><a href="/timeline">Time Line</a></h2>
     <div class="form">
         <form action="/send" method="POST">
                 <label for="message">message</label>
@@ -11,6 +12,6 @@
         </form>
     </div>
     {% for chat in chats %}
-    <p>{{chat.message}} [{{chat.date}}]</p>
+    <p>{{chat.message}} [{{chat.date}}] <a href="/delete/{{chat.id}}">delete</a></p>
     {% endfor %}
 </body>

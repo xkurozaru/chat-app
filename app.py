@@ -13,8 +13,8 @@ db = SQLAlchemy(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=True)
-    password = db.Column(db.String(20))
+    username = db.Column(db.String(20), nullable=False, unique=True)
+    password = db.Column(db.String(20), nullable=False)
 
 class Chat(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -28,19 +28,20 @@ def tologin():
 
 @app.route("/login")
 def login():
-    return render_template("login.html")
+    return render_template("login.html", notification="Enter username and password.")
 
 @app.route("/logincheck", methods=["POST"])
 def logincheck():
     username = request.form.get('username')
     password = request.form.get('password')
-    id = User.query.filter(username==username).filter(password==password).first().id
-
-    print(id)
-    if id is None:
-        return redirect("/login")
+    user = User.query.filter(User.username==username).filter(User.password==password).first()
+    print(username)
+    print(password)
+    print(user)
+    if user is None:
+        return render_template("login.html", notification="Username or password is incorrect.")
     else:
-        session["user_id"] = id
+        session["user_id"] = user.id
         return redirect("/mypage")
 
 @app.route("/regist", methods=["POST"])
@@ -52,11 +53,16 @@ def regist():
     print(password)
     print(id)
 
-    new_user = User(id=id,username=username,password=password)
-    db.session.add(new_user)
-    db.session.commit()
-
-    return redirect("/login")
+    if username=="" or password=="":
+        return render_template("login.html", notification="Both username and password are needed.")
+    
+    if User.query.filter(User.username==username).first() is None:
+        new_user = User(id=id,username=username,password=password)
+        db.session.add(new_user)
+        db.session.commit()
+        return render_template("login.html", notification="Hello "+username+"!")
+    else:
+        return render_template("login.html", notification="This username is already used.")
 
 @app.route("/mypage")
 def mypage():
@@ -76,12 +82,19 @@ def send():
     db.session.commit()
     return redirect('/mypage')
 
-@app.route("/mainpage")
-def mainpage():
+@app.route("/delete/<chatid>")
+def delete(chatid):
+    chat = Chat.query.get(chatid)
+    db.session.delete(chat)
+    db.session.commit()
+    return redirect("/mypage")
+
+@app.route("/timeline")
+def timeline():
     id = session['user_id']
-    username = User.query.order_by().filter(User.id==id).first()
+    username = User.query.filter(User.id==id).first().username
     chats = Chat.query.order_by(Chat.date.desc()).all()
-    return render_template("mainpage.html", username=username, chats=chats)
+    return render_template("timeline.html", username=username, chats=chats)
 
 @app.route("/userpage/<username>")
 def userpage(username):

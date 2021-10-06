@@ -3,16 +3,16 @@
 </head>
 <body>
     <h1>Login</h1>
-    <p>Enter Username and Password.</p>
+    <p>{{notification}}</p>
     <div class="form">
         <form action="/logincheck" method="POST">
             <p>
                 <label for="username">username</label>
-                <input type="text" username=username>
+                <input type="text" name=username>
             </p>
             <p>
                 <label for="password">password</label>
-                <input type="text" password=password>
+                <input type="text" name=password>
             </p>
             <input type="submit" value="login">
         </form>
