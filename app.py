@@ -102,4 +102,4 @@ def userpage(username):
     return render_template("userpage.html", username=username, chats=chats)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=os.environ['PORT'])
