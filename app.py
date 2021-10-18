@@ -4,6 +4,7 @@ import sqlite3
 from flask_sqlalchemy import *
 import datetime
 import random
+import os
 
 app = Flask(__name__)
 app.secret_key = 'qwertyuiopasdfghjklzxcvbnm'

@@ -18,5 +18,4 @@ WORKDIR myapp
 RUN pip install flask flask-sqlalchemy
 
 # アプリケーションの起動
-ENV FLASK_APP app.py
-CMD ["flask", "run", "--host", "0.0.0.0", "--port", "5000"]
+CMD ["python","app.py"]
