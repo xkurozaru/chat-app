@@ -5,6 +5,13 @@ from flask_sqlalchemy import *
 import datetime
 import random
 import os
+import MeCab
+import ipadic
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg
+from matplotlib.figure import Figure
+from io import BytesIO
 
 app = Flask(__name__)
 app.secret_key = 'qwertyuiopasdfghjklzxcvbnm'
@@ -102,5 +109,63 @@ def userpage(username):
     chats = Chat.query.order_by(Chat.date.desc()).filter(Chat.username==username).all()
     return render_template("userpage.html", username=username, chats=chats)
 
+@app.route("/trend/<period>")
+def trend(period):
+    now = datetime.datetime.now().replace(microsecond = 0)
+
+    tagger = MeCab.Tagger(ipadic.MECAB_ARGS)
+    noun_list = []
+
+    if(period=="all"):
+        chats = Chat.query.order_by().all()
+    elif(period=="day"):
+        date_str = str(now.year) + "-" + str(now.month) + "-" + str(now.day)
+        chats = Chat.query.order_by().filter(Chat.date.startswith(date_str)).all()
+    elif(period=="month"):
+        date_str = str(now.year) + "-" + str(now.month)
+        chats = Chat.query.order_by().filter(Chat.date.startswith(date_str)).all()
+    elif(period=="year"):
+        date_str = str(now.year)
+        chats = Chat.query.order_by().filter(Chat.date.startswith(date_str)).all()
+
+    for chat in chats:
+        node = tagger.parseToNode(chat.message)
+        while node:
+            feature = node.feature
+            features = feature.split(',')
+            hinshi = features[0]
+
+            if hinshi != "名詞":
+                node = node.next
+            else:
+                surface = node.surface
+                noun_list.append(surface)
+                node = node.next
+
+    noun_string = ' '.join(noun_list)
+    print(noun_string)
+    wordcloud = WordCloud(
+        font_path='/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc',
+        width=900,
+        height=600,
+        background_color="white",
+        max_words=500,min_font_size=4,
+        collocations = False).generate(noun_string)
+
+    fig = plt.figure(figsize=(15,12))
+    plt.imshow(wordcloud)
+    plt.axis("off")
+
+    canvas = FigureCanvasAgg(fig)
+    png_output = BytesIO()
+    canvas.print_png(png_output)
+    data = png_output.getvalue()
+    response = make_response(data)
+    response.headers['Content-Type'] = 'image/png'
+    response.headers['Content-Length'] = len(data)
+    return response
+
+
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=os.environ['PORT'])
+    app.run(debug=True,port=5001)
+    #app.run(debug=True, host="0.0.0.0", port=os.environ['PORT'])
