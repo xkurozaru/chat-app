@@ -5,6 +5,7 @@ RUN git clone https://github.com/xkurozaru/pbl_share.git myapp
 
 WORKDIR myapp
 
+RUN pip install --upgrade pip setuptools
 RUN pip install flask flask-sqlalchemy
 RUN pip install mecab-python3 ipadic
 RUN pip install wordcloud
