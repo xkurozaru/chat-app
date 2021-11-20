@@ -16,8 +16,9 @@ from io import BytesIO
 
 app = Flask(__name__)
 app.secret_key = 'qwertyuiopasdfghjklzxcvbnm'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://rskhavvdgvymkn:d72f7e3139165ac0f583c795e5fc77b2dd6a4593599df41273ab5453eec5257b@ec2-54-145-9-12.compute-1.amazonaws.com:5432/devdftovtitgd'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db_url = os.environ.get('DATABASE_URL')
+app.config['SQLALCHEMY_DATABASE_URI'] = db_url
+
 db = SQLAlchemy(app)
 
 class User(db.Model):
@@ -83,7 +84,7 @@ def mypage():
 @app.route("/send", methods=["POST"])
 def send():
     id = session['user_id']
-    date = str(datetime.datetime.now().replace(microsecond = 0))
+    date = str(datetime.datetime.now(pytz.timezone('Asia/Tokyo').replace(microsecond = 0))
     message = request.form.get('message')
     username = User.query.filter(User.id==id).first().username
     new_chat = Chat(username=username,date=date,message=message)
@@ -112,7 +113,7 @@ def userpage(username):
 
 @app.route("/trend/<period>")
 def trend(period):
-    now = datetime.datetime.now().replace(microsecond = 0)
+    now = datetime.datetime.now(pytz.timezone('Asia/Tokyo')).replace(microsecond = 0)
 
     tagger = MeCab.Tagger(ipadic.MECAB_ARGS)
     noun_list = []
