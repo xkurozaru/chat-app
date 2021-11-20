@@ -4,6 +4,7 @@ import sqlite3
 from flask_sqlalchemy import *
 import psycopg2
 import datetime
+import pytz
 import random
 import os
 import MeCab
@@ -84,7 +85,7 @@ def mypage():
 @app.route("/send", methods=["POST"])
 def send():
     id = session['user_id']
-    date = str(datetime.datetime.now(pytz.timezone('Asia/Tokyo').replace(microsecond = 0))
+    date = str(datetime.datetime.now(pytz.timezone('Asia/Tokyo')).replace(microsecond = 0))
     message = request.form.get('message')
     username = User.query.filter(User.id==id).first().username
     new_chat = Chat(username=username,date=date,message=message)

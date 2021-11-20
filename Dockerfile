@@ -18,4 +18,6 @@ RUN pip install psycopg2
 RUN pip install mecab-python3 ipadic
 RUN pip install wordcloud
 
+RUN python datebase_init.py
+
 CMD ["python", "app.py"]
