@@ -10,10 +10,7 @@ RUN apt install -y fonts-ipafont
 RUN apt install -y postgresql postgresql-contrib
 RUN apt install -y python3-dev
 RUN apt install -y gcc
-RUN apt install -y postgres-xc-server-dev
 RUN apt install -y libpq-dev
-RUN apt install -y postgresql-client-common
-RUN apt install -y postgresql-common
 
 RUN pip install --upgrade pip
 RUN pip install flask flask-sqlalchemy
