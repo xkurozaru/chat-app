@@ -15,7 +15,7 @@ from io import BytesIO
 
 app = Flask(__name__)
 app.secret_key = 'qwertyuiopasdfghjklzxcvbnm'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///chat.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///chat.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -165,6 +165,11 @@ def trend(period):
     response.headers['Content-Length'] = len(data)
     return response
 
+@app.route("/url")
+def url():
+    a = os.environ.get('DATABASE_URL')
+    print(a)
+    return redirect("/")
 
 if __name__ == '__main__':
     #app.run(debug=True,port=5001)
