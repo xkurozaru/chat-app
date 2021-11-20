@@ -17,7 +17,9 @@ from io import BytesIO
 
 app = Flask(__name__)
 app.secret_key = 'qwertyuiopasdfghjklzxcvbnm'
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+#os.environ['DATABASE_URL']
+db_url = 'postgresql://rskhavvdgvymkn:d72f7e3139165ac0f583c795e5fc77b2dd6a4593599df41273ab5453eec5257b@ec2-54-145-9-12.compute-1.amazonaws.com:5432/devdftovtitgd'
+app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -32,6 +34,8 @@ class Chat(db.Model):
     username = db.Column(db.String(20))
     date = db.Column(db.String(20))
     message = db.Column(db.String(400))
+
+db.create_all()
 
 @app.route("/")
 def tologin():
