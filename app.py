@@ -2,6 +2,7 @@ from enum import unique
 from flask import *
 import sqlite3
 from flask_sqlalchemy import *
+import psycopg2
 import datetime
 import random
 import os
@@ -15,7 +16,7 @@ from io import BytesIO
 
 app = Flask(__name__)
 app.secret_key = 'qwertyuiopasdfghjklzxcvbnm'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///chat.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://rskhavvdgvymkn:d72f7e3139165ac0f583c795e5fc77b2dd6a4593599df41273ab5453eec5257b@ec2-54-145-9-12.compute-1.amazonaws.com:5432/devdftovtitgd'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -164,12 +165,6 @@ def trend(period):
     response.headers['Content-Type'] = 'image/png'
     response.headers['Content-Length'] = len(data)
     return response
-
-@app.route("/url")
-def url():
-    a = os.environ.get('DATABASE_URL')
-    print(a)
-    return redirect("/")
 
 if __name__ == '__main__':
     #app.run(debug=True,port=5001)

@@ -1,13 +1,14 @@
 FROM python:3.9-slim
 
-RUN apt-get update
-RUN apt-get install -y git
+RUN apt update
+RUN apt install -y git
 RUN git clone https://github.com/xkurozaru/pbl_share.git myapp
 
 WORKDIR myapp
 
 RUN apt install -y fonts-ipafont
-RUN apt-get install -y postgresql postgresql-contrib
+RUN apt install -y postgresql postgresql-contrib
+RUN apt install -y libpq-dev
 
 RUN pip install --upgrade pip
 RUN pip install flask flask-sqlalchemy
