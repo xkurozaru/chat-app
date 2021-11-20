@@ -7,5 +7,7 @@ WORKDIR myapp
 
 RUN pip install flask flask-sqlalchemy
 RUN pip install mecab-python3 ipadic
+RUN pip install wordcloud
+RUN apk add font-ipafont-gothic
 
 CMD ["python", "app.py"]

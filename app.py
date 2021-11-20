@@ -88,7 +88,7 @@ def send():
     new_chat = Chat(username=username,date=date,message=message)
     db.session.add(new_chat)
     db.session.commit()
-    return redirect('/mypage')
+    return redirect('/timeline')
 
 @app.route("/delete/<chatid>")
 def delete(chatid):
@@ -145,7 +145,8 @@ def trend(period):
     noun_string = ' '.join(noun_list)
     print(noun_string)
     wordcloud = WordCloud(
-        font_path='/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc',
+        #font_path='/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc',
+        font_path='/usr/share/fonts/truetype/fonts-japanese-gothic.ttf'
         width=900,
         height=600,
         background_color="white",
@@ -167,5 +168,5 @@ def trend(period):
 
 
 if __name__ == '__main__':
-    app.run(debug=True,port=5001)
-    #app.run(debug=True, host="0.0.0.0", port=os.environ['PORT'])
+    #app.run(debug=True,port=5001)
+    app.run(debug=True, host="0.0.0.0", port=os.environ['PORT'])
