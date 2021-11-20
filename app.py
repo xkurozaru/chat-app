@@ -4,7 +4,6 @@ import sqlite3
 from flask_sqlalchemy import *
 import psycopg2
 import datetime
-import pytz
 import random
 import os
 import MeCab
@@ -89,7 +88,7 @@ def mypage():
 @app.route("/send", methods=["POST"])
 def send():
     id = session['user_id']
-    date = str(datetime.datetime.now(pytz.timezone('Asia/Tokyo')).replace(microsecond = 0))
+    date = str(datetime.datetime.utcnow().replace(microsecond = 0) + datetime.timedelta(hours=9))
     message = request.form.get('message')
     username = User.query.filter(User.id==id).first().username
     new_chat = Chat(username=username,date=date,message=message)
@@ -118,7 +117,7 @@ def userpage(username):
 
 @app.route("/trend/<period>")
 def trend(period):
-    now = datetime.datetime.now(pytz.timezone('Asia/Tokyo')).replace(microsecond = 0)
+    now = datetime.datetime.now().replace(microsecond = 0) + datetime.timedelta(hours=9)
 
     tagger = MeCab.Tagger(ipadic.MECAB_ARGS)
     noun_list = []
