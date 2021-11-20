@@ -145,8 +145,7 @@ def trend(period):
     noun_string = ' '.join(noun_list)
     print(noun_string)
     wordcloud = WordCloud(
-        #font_path='/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc',
-        font_path='/usr/share/fonts/truetype/fonts-japanese-gothic.ttf',
+        font_path='/usr/share/fonts/opentype/ipag.ttf',
         width=900,
         height=600,
         background_color="white",
