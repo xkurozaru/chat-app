@@ -13,7 +13,6 @@ RUN apt install -y gcc
 RUN apt install -y libpq-dev
 
 RUN pip install --upgrade pip
-RUN pip install pytz
 RUN pip install flask flask-sqlalchemy
 RUN pip install psycopg2
 RUN pip install psycopg2-binary
