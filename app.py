@@ -19,6 +19,7 @@ app = Flask(__name__)
 app.secret_key = 'qwertyuiopasdfghjklzxcvbnm'
 db_url = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_DATABASE_URI'] = db_url
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
